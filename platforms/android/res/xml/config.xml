@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.johnsoncontrols.thermostat" version="0.79" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <preference name="loglevel" value="DEBUG" />
+    <feature name="StatusBar">
+        <param name="android-package" value="org.apache.cordova.statusbar.StatusBar" />
+        <param name="onload" value="true" />
+    </feature>
+    <feature name="Whitelist">
+        <param name="android-package" value="org.apache.cordova.whitelist.WhitelistPlugin" />
+        <param name="onload" value="true" />
+    </feature>
+    <feature name="Battery">
+        <param name="android-package" value="org.apache.cordova.batterystatus.BatteryListener" />
+    </feature>
+    <feature name="NetworkStatus">
+        <param name="android-package" value="org.apache.cordova.networkinformation.NetworkManager" />
+    </feature>
+    <feature name="SplashScreen">
+        <param name="android-package" value="org.apache.cordova.splashscreen.SplashScreen" />
+        <param name="onload" value="true" />
+    </feature>
+    <allow-intent href="market:*" />
+    <preference name="disallowOverscroll" value="true" />
+    <preference name="AndroidLaunchMode" value="singleTop" />
+    <preference name="android-minSdkVersion" value="19" />
+    <preference name="android-windowSoftInputMode" value="adjustResize" />
+    <preference name="SplashScreen" value="screen" />
+    <preference name="orientation" value="portrait" />
+    <splash density="land-hdpi" src="res/screen/android/Splash.png" />
+    <splash density="land-ldpi" src="res/screen/android/Splash.png" />
+    <splash density="land-mdpi" src="res/screen/android/Splash.png" />
+    <splash density="land-xhdpi" src="res/screen/android/Splash.png" />
+    <splash density="port-hdpi" src="res/screen/android/Splash.png" />
+    <splash density="port-ldpi" src="res/screen/android/Splash.png" />
+    <splash density="port-mdpi" src="res/screen/android/Splash.png" />
+    <splash density="port-xhdpi" src="res/screen/android/Splash.png" />
+    <icon density="ldpi" src="res/screen/android/icon.png" />
+    <icon density="mdpi" src="res/screen/android/icon.png" />
+    <icon density="hdpi" src="res/screen/android/icon.png" />
+    <icon density="xhdpi" src="res/screen/android/icon.png" />
+    <name>JCI</name>
+    <description>
+        JCI Thermostat App
+    </description>
+    <author email="bipul.kumar@mindteck.com" href="http://cordova.io">
+        Mindteck
+    </author>
+    <content src="index.html" />
+    <access origin="*" />
+    <preference name="Fullscreen" value="true" />
+    <preference name="WebViewBounce" value="false" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <preference name="SplashScreenDelay" value="5000" />
+    <preference name="SplashMaintainAspectRatio" value="true" />
+</widget>

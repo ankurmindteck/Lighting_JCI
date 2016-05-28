@@ -1,0 +1,52 @@
+    section{
+        position:relative;
+        width:100%;
+  
+    }
+    nav{
+       width:100%;
+  
+    }
+    nav ul li{
+        display:inline-block;
+        width:16.66%;
+        text-align:center;
+        cursor:pointer;
+        transition:all .2s;
+        -webkit-transition:all .2s;
+        float:left;
+    }
+	nav ul li a{
+		color: #FFFFFF !important;
+		text-decoration:none;
+		/*text-shadow: 0 0 20px #234AC7, 0 0 30px #8BA0F2;*/
+    }
+	
+    nav ul li:hover{
+        /*border:1px dashed #fff;
+        background:rgba(255,255,255,.1);*/
+    }
+    nav ul{
+        position:absolute;
+        width:100%;
+        padding:0;
+        z-index:100;
+        /*margin:auto;*/
+    }
+    .triangle{
+        font-size: 0px; line-height: 0%; width: 0px;
+        top:0px;
+        border-top: 10px solid #FFF;
+        border-left: 5px solid Transparent;
+        border-right: 5px solid Transparent;
+        margin-left: 58.31%;
+
+    }
+    .line{
+        border-top:1px solid #FFF;
+        left:0px;
+        right:0px;
+        top:0px;
+        width:100%;
+    }
+	

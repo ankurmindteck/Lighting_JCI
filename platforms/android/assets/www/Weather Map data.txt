@@ -1,0 +1,20 @@
+Weather API Key
+	API KEY: 10854226fcb8d50e3fc899cdb08749d6
+
+
+**GeoLocation**
+Add following permissions to Android Manifest
+
+	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+Add following capability in WMAppManifest.xml (Windows phone)
+	ID_CAP_LOCATION - make this true
+
+
+IOS build - statusBarfix
+	set VIEW Model blah blah to NO  - App.plist file
+
+Windows
+	Change orientation "portraitFlipped" to "Portrait" - MainPage.xaml

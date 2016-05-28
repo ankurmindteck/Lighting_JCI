@@ -1,0 +1,43 @@
+
+.battery {
+  position: absolute;
+  width:50px;
+  height: 12px;
+  border: 1px solid black;
+  border-radius: 2px;
+  padding: 1px;
+  -webkit-transform: scale(0.5);
+}
+.battery:before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 50%;
+  right: -5.1px;
+  margin-top: -3px;
+  width: 6px;
+  height: 6px;
+  background: black;
+  clip: rect(0, 6px, 6px, 3.9px);
+  border-radius: 50%;
+  border:1px solid black
+}
+.battery.plugged:after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 50%;
+  right: -19px;
+  margin-top: -3px;
+  width: 6px;
+  height: 6px;
+  background: #f00;
+  border-radius: 50%;
+  border:1px solid black
+}
+.battery .level {
+  width: 20%;
+  height: 100%;
+  background: black;
+  border-radius: 1px;
+}

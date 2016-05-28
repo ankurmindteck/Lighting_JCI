@@ -1,0 +1,325 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <!--meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *"-->
+    <meta name="format-detection" content="telephone=no">
+    <!-- meta name="msapplication-tap-highlight" content="no"  -->
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <title>JCIThermostatApp</title>
+
+    <!-- CordovaAppTest references -->
+    <link href="css/index.css" rel="stylesheet" />
+    <link href="css/roundslider.css" rel="stylesheet" />
+    <link href="css/battery.css" rel="stylesheet" />
+	<link rel="stylesheet" href="css/clndr.css"/>
+
+    <link href="css/footer-nav-bar.css" rel="stylesheet" />
+	<link href="css/font-awesome.min.css" rel="stylesheet" />
+	<link href="css/weather-icons.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css" />
+	
+	<style>
+	@font-face {
+		font-family: 'JCIFont'; 	/*a name to be used later*/
+		src: url('./font/JCIFont.woff') format('woff');
+			 /*url('./font/JCIFont.ttf') format('truetype');*/
+	}
+	</style>
+	
+	
+	<script src="scripts/lib/jquery-1.11.3.min.js"></script>
+    <script src="scripts/lib/jquery.mobile-1.4.5.min.js"></script>
+    <!--script src="scripts/lib/fastclick.js"></script-->
+    <script src="scripts/roundslider.js"></script>
+	
+	<script src="scripts/lib/json2.js"></script>
+	<script src="scripts/lib/jstorage.js"></script>
+	<script src="scripts/lib/underscore-min.js"></script>
+	<script src= "scripts/lib/timezones.full.js"></script>
+	<!--script src= "scripts/lib/datepicker.js"></script-->
+		
+	<script src= "scripts/global.js"></script>
+	
+	<script>
+	$.support.cors = true;
+	$.mobile.allowCrossDomainPages = true;
+	</script>
+
+</head>
+<body class="schedulerBackground">
+
+<div class="top-glow"></div>
+<div class="bottom-glow"></div>
+<div class="right-glow"></div>
+<div class="left-glow"></div>
+<div style="background-color:#260245; width:100%; height:100%;position: fixed;"></div>
+
+	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Index page+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+    <div data-role="page" id="controller" style="background-color:Transparent; text-shadow:none !important;">
+	
+	<div data-role="header" style="background-color:transparent; border-color:transparent; text-shadow:none;">
+        <h1></h1>
+        <div class="ui-btn-left" style="padding-top:1%;">
+			<!-- div id="batteryLife" class="battery"><div class="level"></div></div -->
+			<div style="left:4%; position:fixed;"><a href="#about" data-transition="flip"><img id="logo" style="max-width:200px;" src="./images/mindteck.png"/></a></div>
+		</div>
+        <div id="network" class="ui-btn-right" style="color:#FFF;  margin-right:75px; background-color: transparent; border: none; box-shadow: none;">
+			<span class="wifi" style="font-size:3em; font-weight: normal; font-family:JCIFont;">J</span>
+			<span class="noWifi" style="font-weight:bolder; color:red; font-size: 23pt;position: relative;left: -25px;top: -3px;">!</span>
+		</div>
+	</div>
+
+    <div data-role="container" id="contollerContainer" >
+		<div id="temperature" style="height:290px; width:290px; overflow:hidden;"></div>
+        <!-- img style="max-height:260px; max-width:260px; position: absolute; top: 0px;z-index: 1;" src="curvedArc.svg" / -->
+		<div id="newSvg" style="/*max-height:32px; max-width:290px;*/ position: absolute; top: -30px; left:-30px;">
+			<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="320px" height="320px" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+				viewBox="0 -60 570.777 690.777"
+			 xmlns:xlink="http://www.w3.org/1999/xlink">
+			 <defs>
+				<radialGradient id="MyGradient">
+					<stop offset="10%" stop-color="hsl(0, 0%, 100%)"/>
+					<stop offset="30%" stop-color="hsl(208, 100%, 50%)"/>
+					<stop offset="95%" stop-color="hsl(223, 100%, 37%)"/>
+					<!-- stop offset="10%" stop-color="hsl(0, 0%, 100%)"/>
+					<stop offset="30%" stop-color="hsl(56, 100%, 50%)"/>
+					<stop offset="95%" stop-color="hsl(37, 97%, 57%)"/ -->
+				</radialGradient>
+						
+				<filter id="dropshadow" height="200%">
+				  <feGaussianBlur in="SourceGraphic" stdDeviation="25"/> <!-- stdDeviation is how much to blur -->
+				  <feOffset dx="0" dy="0" result="offsetblur"/> <!-- how much to offset -->
+				  <feMerge> 
+					<feMergeNode/> <!-- this contains the offset blurred image -->
+					<feMergeNode in="SourceGraphic"/> <!-- this contains the element that the filter is applied to -->
+				  </feMerge>
+				</filter>
+			</defs>
+			 <g transform="scale(1.1)" id="Layer_x0020_1">
+			  <path fill="url(#MyGradient)" style="filter:url(#dropshadow)" d="M258.889 0.596282c142.648,0 258.288,115.64 258.288,258.289 0,30.5799 -5.32888,59.9122 -15.0844,87.1372l-68.3088 -24.5653c6.99533,-19.5534 10.8178,-40.6147 10.8178,-62.572 0,-102.567 -83.1469,-185.712 -185.712,-185.712 -102.565,0 -185.712,83.1453 -185.712,185.712 0,21.8977 3.80208,42.9041 10.7613,62.4119 -23.1891,8.34638 -46.1067,16.6159 -68.2712,24.6751 -9.74294,-27.2109 -15.0655,-56.526 -15.0655,-87.087 0,-142.65 115.64,-258.289 258.288,-258.289z"/>
+			 </g>
+			</svg>
+		</div>
+        <div class="value" style="top:43%; left:50%; width:60%; z-index:100;">
+            <span id="temperatureValue" style="color:#FFFFFF; font-size:90px;">-_-</span>
+			<!--span id="temperatureDecimalValue" style="color:#FFFFFF; font-size:25px;"></span-->
+			<div style="display: inline-block; vertical-align:top;"><span id="temperatureUnit" style="z-index:100; display: inline-block; font-size:x-large; padding-top:95%;"></span></div>
+        </div>
+
+			<!--span id="degreeO" style="top:27%; right:28%; z-index:100; position:absolute; font-size:large; display:none;"></span-->
+			<!--span id="temperatureUnit" style="top:28%; right:21%; z-index:100; position:absolute; font-size:x-large;"></span-->
+		
+        <!-- div class="value" style="top:23%; left:50%">
+            <i style="color:#9EA7A9" class="fa fa-tint fa-lg"></i>
+            <font size="4" color="#9EA7A9" face="verdana">68</font><sub style="font-size:smaller; color:#9EA7A9;">%</sub>
+        </div -->
+
+        <div id="currentModeInfoDiv" style="top:54%; height:5%; z-index:4; left:0px; right:0px; padding:6%;  position:absolute; text-align: center;">
+			<!--img id="currentModeIcon" style="max-height:20px; max-width:20px; vertical-align: middle;" src="" /-->
+            <span id="currentModeIcon" style="vertical-align:middle; font-family:JCIFont;font-size:18pt;"></span>
+            <span id="currentMode" style="vertical-align:middle; padding-left: 3px;"></span>
+		</div>
+		<div id="fanSpin" class="value" style="top:76%; left:52%; font-family:JCIFont; font-size:26pt; z-index: 100; text-shadow: 0 0 8px #38c, 0 0 15px #929FD3;">N</div>
+		<div class="fa-spin" style="top:50%; left:50%; font-size:1pt; z-index:0"></div> <!--no use but this is fixing svg refresh issue because of spin -->
+
+        <div id="decrement" style="top:68%; left:3%; padding:3%; z-index:10; position:absolute;"><i class="fa fa-minus fa-2x"></i></div>
+        <div id="increment" style="top:68%; right:3%; padding:3%; z-index:10; position:absolute;"><i class="fa fa-plus fa-2x"></i></div>
+		<!--img id="fanMode" class="value" style="top:25%; left:50%; max-width:20px; max-height:20px;" src="./images/fan_glow.png" /-->
+		
+		<div id="aboveTempDiv" class="value" style="top:-10%; left:50%">
+            <span id="upperTemperatureValue" style="color:#FFFFFF; font-size:25pt; text-shadow: 0px 2px 25px #3FFFC5;"></span>
+        </div>
+    </div>
+	
+	<div id="thermostatName" style="text-align:center; width:100%; position:fixed; top:60%; color:#FFFFFF; font-size:15pt; text-shadow: 0px 2px 25px #1DA5D6;">Bedroom</div>
+	<div id="thermostatManualOverride" style="text-align:center; display: none; width:100%; position:fixed; top:65%; color:#FFFFFF; font-size:10pt; text-shadow: 0px 2px 25px #1DA5D6;"></div>
+      
+	
+	<div id="climateInfo">
+		<div style="display: inline-block; text-align: center; padding-right: 5px;">
+			<i id="currentWeatherIcon" style="margin-bottom:8px; display:block; text-shadow: 0px 0px 10px #F4DA3D; font-size: 2em;" class="wi wi-na fa-2x"></i>
+			<span style="display:none;" id="weatherDescription"></span>
+		</div>
+		<div style="display:inline-block;"> <span id="currentOutsideTemperature" style="text-shadow: 0px 0px 20px #D5FF95; bottom: 0px;border-left: 2px solid #FFF; font-size: 20pt; text-indent: 5px;">&nbsp-_- </span> </div>	
+	</div>
+	<div id="thermostatInfo">
+		<div id="scheduleRunning" style="color: #FFF; font-size: 12pt; text-align: right;"></div>
+		<div id="weekdayTime" style="font-size: small; text-align: right;"></div>
+		<div id="currentDate" style="font-size: small; text-align: right;"></div>
+	</div>
+	
+   <div id="switchControl" style="text-align:center; width:100%; position:fixed; bottom:15%; height: 14%;">
+		<div class="line"></div>
+        <div style="margin-left: -5px;"><div class="triangle"></div></div>
+        <div class="nav-container">
+            <section>
+                <nav>
+                    <ul>
+						<!--<li id="iconCalendar" data-xcoord="iconCalendar"><a href="#scheduler" data-transition="flip" data-prefetch><span class="inactiveMode">A<span class="modeDesc"></span></span></a></li>-->
+                        <li id="iconSunny" data-xcoord="iconSunny"><span class="inactiveMode">G<span class="modeDesc">Heat</span></span></li>
+                        <li id="iconSnow" data-xcoord="iconSnow"><span class="inactiveMode">E<span class="modeDesc">Cool</span></span></li>
+                        <li id="iconAuto" data-xcoord="iconAuto"><span class="inactiveMode">H<span class="modeDesc">Auto</span></span></li>                   
+                        <li id="iconFan" data-xcoord="iconFan"><span class="inactiveMode">B<span class="modeDesc">Fan</span></span></li>
+						<li id="iconPower" data-xcoord="iconPower"><span class="inactiveMode">D<span class="modeDesc">Off</span></span></li>
+                    </ul>
+                </nav>
+            </section>
+        </div>
+		<div id="nav-overlay" class="nav-container" style="z-index: 0; background-color: rgba(0,0,0,0.5);"></div>
+	</div>
+    <div data-role="footer" id="footerDiv">  
+			<section>
+                <nav>
+                    <ul>
+						<li id="" data-xcoord="" style="width: 33%;"> <a href="#Lighting" data-transition="flip" style="margin-top:15px;font-size: 35px;" class="fa fa-lightbulb-o" aria-hidden="true"><span class="selectSource"></span></a></li>
+                        <li id="" data-xcoord="" style="width: 33%;"><a href="#contollerContainer" data-transition="flip" style="margin-top:15px; font-size: 44px;" class="inactiveMode" >I<span class="selectSource"></span></a></li>
+                        <li id="" data-xcoord="" style="width: 33%;"><a href="#thermostat" data-transition="flip" style="margin-top:15px; font-size: 35px;" class="fa fa-cog" aria-hidden="true"><span class="selectSource"></span></a></li>
+                    </ul>
+                </nav>
+            </section>
+		
+        <div class="mode"><span>Mindteck</span></div>
+    </div>
+    
+    </div>
+
+    <!-- Cordova reference, this is added to your app when it's built. -->
+    <script src="cordova.js"></script>
+    <script src="scripts/lib/platformOverrides.js"></script>
+	<script src="scripts/worker_functions.js"></script>
+    <script src="scripts/index.js"></script>
+    <script src="scripts/lightingIndex.js"></script>
+	
+	<script src="scripts/lib/jquery.ipaddress.js"></script>
+	<script src="scripts/lib/jquery.caret.js"></script>
+
+			<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ About Page +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<div data-role="page" id="about" data-dom-cache="false" style="background-color:Transparent; text-shadow:none !important;">
+		<div data-role="header" style="background-color:Transparent; color:#FFF; border:none;">
+			<h1>About</h1>
+			<a href="#"  data-rel="back" data-transition="flip" data-direction="reverse" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-home">Back</a>
+			<div  class="ui-btn-right" style="color:#FFF; top:-3px; margin-right:40px; background-color: transparent; font-weight: normal;">
+				<div style="height:35px; width:35px; text-align:center;"><span class="wifi" style="font-size:2.5em; font-family:JCIFont;">J</span></div>
+				<div style="position:absolute; left:0px; top:6px; height:35px; width:35px; text-align:center;"><span class="noWifi" style="font-weight:bolder; color:red; font-size: 2em;">!</span></div>
+			</div>
+		</div>
+		<div data-role="container" style="padding:5%; color:#FFF">		
+			<div style="text-align:center; margin:0 auto;">
+					Johnson Controls, Inc.
+			</div>
+			<div style="text-align:center; font-size:8pt; margin:0 auto; padding-top:5px;">
+					Version - 0.80
+			</div>
+
+		</div>
+	</div>
+	
+	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Thermostat Page +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<div data-role="page" id="thermostat" data-dom-cache="false" style="background-color:Transparent; text-shadow:none !important;">
+		<div data-role="header" style="background-color:Transparent; color:#FFF; border:none;">
+			<h1>Thermostats</h1>
+			<a href="#"  data-rel="back" data-transition="flip" data-direction="reverse" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-home">Back</a>
+			<div  class="ui-btn-right" style="color:#FFF; top:-3px; margin-right:40px; background-color: transparent; font-weight: normal;">
+				<div style="height:35px; width:35px; text-align:center;"><span class="wifi" style="font-size:2.5em; font-family:JCIFont;">J</span></div>
+				<div style="position:absolute; left:0px; top:6px; height:35px; width:35px; text-align:center;"><span class="noWifi" style="font-weight:bolder; color:red; font-size: 2em;">!</span></div>
+			</div>
+		</div>
+		<div data-role="container" style="padding:5%; color:#FFF">
+			<div style="display: inline-block; width:100%;">
+				<input class="thermoButtons" id="editThermo" type="button" data-role="none" value="Edit" />
+				<input class="thermoButtons" id="delThermo" type="button" data-role="none" value="Remove" />
+				<input class="thermoButtons" id="delAllThermo" type="button" data-role="none" value="Remove All" />
+			</div>
+			<div id="addThermoDiv" style="display:none;">
+				<div style="margin-top:15px; text-align: right;" id="newThermoRefresh">Hide  <i class="fa fa-chevron-up"></i></div>
+				<div style="margin-top:-10px;">Thermostat Name<input id="ipName" class="ipName" type="text" data-clear-btn="true"/></div>
+				<div style="margin-top:10px;">Thermostat's IP Address<input name="form[ip]" id="ip" class="ip" type="text" data-role="none" /> </div>
+				<input style="margin-top:15px;" id="saveIpAddress" type="button" data-role="none" value="SAVE IP ADDRESS" />
+			</div>
+			<div id="thermostatContainer">
+				<ul id="grid"></ul>
+			</div>    
+		</div>
+	</div>
+	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ Lighting Page +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<div data-role="page" id="Lighting" data-dom-cache="false" style="background-color:Transparent; text-shadow:none !important;">
+	
+	<div data-role="header" style="background-color:transparent; border-color:transparent; text-shadow:none;">
+        <h1></h1>
+        <div class="ui-btn-left" style="padding-top:1%;">
+			<!-- div id="batteryLife" class="battery"><div class="level"></div></div -->
+			<div style="left:4%; position:fixed;"><a href="#about" data-transition="flip"><img id="logo" style="max-width:200px;" src="./images/mindteck.png"/></a></div>
+		</div>
+        <div id="network" class="ui-btn-right" style="color:#FFF;  margin-right:75px; background-color: transparent; border: none; box-shadow: none;">
+			<span class="wifi" style="font-size:3em; font-weight: normal; font-family:JCIFont;">J</span>
+			<span class="noWifi" style="font-weight:bolder; color:red; font-size: 23pt;position: relative;left: -25px;top: -3px;">!</span>
+		</div>
+	</div>
+
+      <div data-role="container" id="contollerContainer" >
+		<div id="temperatureX" style="height:290px; width:290px; overflow:hidden;"></div>
+		
+        <div class="value" style="top:43%; left:50%; width:60%; z-index:100;">
+            <span id="lightingValue" style="color:#FFFFFF; font-size:90px;">-_-</span>
+			<!--span id="temperatureDecimalValue" style="color:#FFFFFF; font-size:25px;"></span-->
+			<div style="display: inline-block; vertical-align:top;"><span id="lightingUnit" style="z-index:100; display: inline-block; font-size:x-large; padding-top:95%;"></span></div>
+        </div>
+
+			<!--span id="degreeO" style="top:27%; right:28%; z-index:100; position:absolute; font-size:large; display:none;"></span-->
+			<!--span id="temperatureUnit" style="top:28%; right:21%; z-index:100; position:absolute; font-size:x-large;"></span-->
+		
+        <!-- div class="value" style="top:23%; left:50%">
+            <i style="color:#9EA7A9" class="fa fa-tint fa-lg"></i>
+            <font size="4" color="#9EA7A9" face="verdana">68</font><sub style="font-size:smaller; color:#9EA7A9;">%</sub>
+        </div -->
+
+        <div id="currentModeInfoDiv" style="top:54%; height:5%; z-index:4; left:0px; right:0px; padding:6%;  position:absolute; text-align: center;">
+			<!--img id="currentModeIcon" style="max-height:20px; max-width:20px; vertical-align: middle;" src="" /-->
+            <span id="currentModeIcon" style="vertical-align:middle; font-family:JCIFont;font-size:18pt;"></span>
+            <span id="currentMode" style="vertical-align:middle; padding-left: 3px;"></span>
+		</div>
+		<div id="fanSpin" class="value" style="top:76%; left:52%; font-family:JCIFont; font-size:26pt; z-index: 100; text-shadow: 0 0 8px #38c, 0 0 15px #929FD3;">N</div>
+		<div class="fa-spin" style="top:50%; left:50%; font-size:1pt; z-index:0"></div> <!--no use but this is fixing svg refresh issue because of spin -->
+
+        <div id="decrement" style="top:68%; left:3%; padding:3%; z-index:10; position:absolute;"><i class="fa fa-minus fa-2x"></i></div>
+        <div id="increment" style="top:68%; right:3%; padding:3%; z-index:10; position:absolute;"><i class="fa fa-plus fa-2x"></i></div>
+		<!--img id="fanMode" class="value" style="top:25%; left:50%; max-width:20px; max-height:20px;" src="./images/fan_glow.png" /-->
+		
+		<div id="aboveTempDiv" class="value" style="top:-10%; left:50%">
+            <span id="upperTemperatureValue" style="color:#FFFFFF; font-size:25pt; text-shadow: 0px 2px 25px #3FFFC5;"></span>
+        </div>
+    </div>
+	
+	<div id="thermostatName" style="text-align:center; width:100%; position:fixed; top:60%; color:#FFFFFF; font-size:15pt; text-shadow: 0px 2px 25px #1DA5D6;">Bedroom</div>
+	<div id="thermostatManualOverride" style="text-align:center; display: none; width:100%; position:fixed; top:65%; color:#FFFFFF; font-size:10pt; text-shadow: 0px 2px 25px #1DA5D6;"></div>
+      
+	
+	<div id="climateInfo">
+		<div style="display: inline-block; text-align: center; padding-right: 5px;">
+			<i id="currentWeatherIcon" style="margin-bottom:8px; display:block; text-shadow: 0px 0px 10px #F4DA3D; font-size: 2em;" class="wi wi-na fa-2x"></i>
+			<span style="display:none;" id="weatherDescription"></span>
+		</div>
+		<div style="display:inline-block;"> <span id="currentOutsideTemperature" style="text-shadow: 0px 0px 20px #D5FF95; bottom: 0px;border-left: 2px solid #FFF; font-size: 20pt; text-indent: 5px;">&nbsp-_- </span> </div>	
+	</div>
+	<div id="thermostatInfo">
+		<div id="scheduleRunning" style="color: #FFF; font-size: 12pt; text-align: right;"></div>
+		<div id="weekdayTime" style="font-size: small; text-align: right;"></div>
+		<div id="currentDate" style="font-size: small; text-align: right;"></div>
+	</div>
+	
+    <div data-role="footer" id="footerDiv">  
+	<div class="line"></div>
+			<section>
+                <nav>
+                    <ul>
+						<li id="" data-xcoord="" style="width: 33%;"> <a href="#Lighting" data-transition="flip" style="margin-top:15px;font-size: 35px;" class="fa fa-lightbulb-o" aria-hidden="true"><span class="selectSource"></span></a></li>
+                        <li id="" data-xcoord="" style="width: 33%;"><a href="#controller" data-transition="flip" style="margin-top:15px; font-size: 44px;" class="inactiveMode" >I<span class="selectSource"></span></a></li>
+                        <li id="" data-xcoord="" style="width: 33%;"><a href="#thermostat" data-transition="flip" style="margin-top:15px; font-size: 35px;" class="fa fa-cog" aria-hidden="true"><span class="selectSource"></span></a></li>
+                    </ul>
+                </nav>
+            </section>
+        <div class="mode"><span>Mindteck</span></div>
+    </div>
+	</div>
+</body>
+</html>
